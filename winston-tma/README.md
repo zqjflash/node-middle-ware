@@ -290,4 +290,50 @@ __options__:
 * __filename__: 远端日志文件名(不需要包含日期、路径等附加信息);
 * __tmaConfig__: tma配置文件路径或已配置的`tma-rpc.util.configure`实例;
 * __interval__: 发送日志的间隔, *默认值为500ms*;
+* __format__: 创建新文件的间隔, 为DateFormat对象, *默认值为FORMAT.LogByDay*
+* __hasSufix__: 日志文件名是否带.log后缀, *默认值为true*
+* __hasAppNamePrefix__: 是否允许框架在日志文件名上增加业务相关的标识, *默认值为 true*
+* __concatStr__: 日志文件名中用户自定义字符与日期字符间的连接符, *默认值为 _*
+* __separ__: 日志内容项之间的分隔符, *默认值为 |*
+* __formatter__: 定义日志内容格式化方法, *默认值为 Formatter.Detail()*
 
+_请注意: 在`TmaRemote`中`options.format`不能为`FORMAT.LogByCustom`_
+为了方便使用 TmaRemote.FORMAT = DateFormat
+
+__如果服务通过node-eyes运行,则无需配置`options.tmaConfig`选项__
+
+## Metadata
+
+通过指定 [Metadata](https://github.com/winstonjs/winston#logging-with-metadata "Metadata") 可输出2种附加数据。
+
+### pid
+
+通过`pid`属性,可以指定日志输出条目中_进程id_部分,默认情况下为`process.pid`
+
+如:
+
+```js
+logger.info('data', {
+    pid: 123456
+});
+```
+
+则输出:
+
+> 2016-01-01 00:11:22| __123456__ |INFO|data
+
+### lineno
+
+通过`lineno`属性,可以指定日志输出条目中_文件名与行号_部分,默认值为空(也就是不输出这一节).
+
+如:
+
+```js
+logger.info('data', {
+    lineno: 'app.js:6'
+});
+```
+
+则输出:
+
+> 2016-01-01 00:11:22|123456|INFO| __app.js:6__ |data
