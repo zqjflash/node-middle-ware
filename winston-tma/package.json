@@ -1,0 +1,37 @@
+{
+    "name": "winston-tma",
+    "version": "0.0.1",
+    "description": "基于winston的扩展,提供符合tma框架的日志格式与输出",
+    "author": {
+        "name": "zqjflash",
+        "email": "zhengqingjiang03@163.com"
+    },
+    "repository": {
+    },
+    "homepage": "",
+    "keywords": [
+        "winston-tma",
+        "winston-transport",
+        "transport",
+        "winston",
+        "node",
+        "tma"
+    ],
+    "engines": {
+        "node": ">=0.10.x"
+    },
+    "dependencies": {
+        "strftime": "latest",
+        "async": "latest",
+        "mkdirp": "latest",
+        "tma-stream": "latest",
+        "tma-rpc": "latest",
+        "tma-config-parser": "latest"
+    },
+    "peerDependencies": {
+        "winston": ">=2.0.0"
+    },
+    "license": "MIT",
+    "publishConfig": {
+    }
+}
