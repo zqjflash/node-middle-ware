@@ -27,3 +27,34 @@ const TmaDate = exports.TmaDate = function(options) {
     }
 };
 util.inherits(TmaDate, TmaBase);
+
+TmaDate.prototype.name = 'tmaDate';
+
+TmaDate.prototype._checkfile = function(cb) {
+    let now = new Date();
+    let regenerate = true;
+    let nowTime;
+
+    if (this.options.format.name !== 'custom') {
+        nowTime = parseInt(strftime(this.options.format.timePattern, now));
+        if (this._lastTime && nowTime - this._lastTime < this.options.format.interval) {
+            regenerate = false;
+        } else {
+            this._lastTime = nowTime;
+        }
+    }
+
+    if (regenerate) {
+        this.filename = path.join(this._dirname, this._basename + '_' + strftime(this.options.format.logPattern, now) + this._extname);
+    }
+
+    fs.stat(this.filename, (err, stats) => {
+        if (err && err.code !== 'ENOENT') {
+            cb(err);
+            return;
+        }
+        cb();
+    });
+};
+TmaDate.FORMAT = TmaDateFormat;
+winston.transports.TmaDate = TmaDate;
