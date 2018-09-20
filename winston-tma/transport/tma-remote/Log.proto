@@ -1,0 +1,43 @@
+package tma;
+message LogInfo {
+    // 业务名称
+    required string appname = 0;
+    // 服务名称
+    required string servername = 1;
+    // 日志文件名称
+    required string sFilename = 2;
+    // 时间格式
+    required string sFormat = 3;
+    // set分组名称
+    optional string setdivision = 4;
+    // 日志文件名是否带.log后缀
+    optional bool bHasSufix = 5 [default = true];
+    // 是否允许框架在日志文件名上增加业务相关的标识
+    optional bool bHasAppNamePrefix = 6 [default = true];
+    // 框架内部的日期和时间部分是否加上[]符号
+    optional bool bHasSquareBracket = 7 [default = false];
+    // 日志文件名中用户自定义字符与日期字符间的连接符,默认是"_"s
+    optional string sConcatStr = 8 [default = "_"];
+    // 日志内容项之间的分隔符,默认是"|"
+    optional string sSepar = 9 [default = "|"];
+    // 按天/小时/分钟输出日志时的记录类型,例如,按一天:day或者1day;按两小时:2hour;按10分钟:10minute
+    optional string sLogType = 10 [default = ""]; 
+}
+
+service Log {
+    /**
+     * 记录远程日志
+     * @param app, 应用名称
+     * @param server, 服务名称
+     * @param file, 文件名称
+     * @param format, 日志时间格式(%Y%m%d)
+     * @param buffer, 日志内容
+     */
+    rpc logger (SearchRequest) returns (SearchResponse);
+    /**
+     * 记录远程日志
+     * @param info, LogInfo
+     * @param buffer, 日志内容
+     */
+    rpc loggerByInfo(SearchRequest) returns (SearchResponse);
+}

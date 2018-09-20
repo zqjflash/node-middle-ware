@@ -131,3 +131,36 @@ TmaRemote.prototype.log = function(level, msg, meta, callback) {
     }
 };
 
+TmaRemote.prototype._flush = function() {
+    let buffer = new TmaStream.List(TmaStream.String);
+    let i = 0;
+    for (i = this._bufferIndex; i < this._buffer.length; i += 1) {
+        buffer.push(this._buffer[i].output);
+        this._buffer[i].callback(null, true);
+    }
+    for (i = 0; i < this._bufferIndex; i += 1) {
+        buffer.push(this._buffer[i].output);
+        this._buffer[i].callback(null, true);
+    }
+
+    this._bufferIndex = 0;
+    this._buffer = [];
+
+    this._client.loggerbyInfo(this._logInfo, buffer).catch(emptyfn);
+};
+
+TmaRemote.prototype.close = function() {
+    if (this._timerid) {
+        clearTimeout(this._timerid);
+        delete this._timerid;
+    }
+
+    this._buffer = [];
+    this._bufferIndex = 0;
+
+    this._client.disconnect();
+};
+
+TmaRemote.FORMAT = TmaDateFormat;
+
+module.exports = winston.transports.TmaRemote = TmaRemote;
